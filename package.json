@@ -1,0 +1,27 @@
+{
+  "name": "coding-prompts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "coding-prompts": "./dist/cli.js"
+  },
+  "scripts": {
+    "manifest": "node scripts/build_manifest.mjs",
+    "cli": "tsx cli/src/index.ts",
+    "build": "tsc --project tsconfig.cli.json && node scripts/post_build.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.2",
+    "fast-glob": "^3.3.2",
+    "gray-matter": "^4.0.3",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.6.3",
+    "zod": "^3.23.8"
+  },
+  "dependencies": {
+    "commander": "^14.0.2",
+    "prompts": "^2.4.2"
+  }
+}
