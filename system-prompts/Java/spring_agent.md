@@ -163,6 +163,17 @@ Ogni feature/domino (autenticazione, utenti, ruoli, notifiche, ecc.) si sviluppa
 - Configurare variabili d'ambiente tramite application.yml e profili (dev, test, prod); non committare segreti.
 - Abilitare CORS solo dove serve; applicare rate limiting e input sanitization quando esposto a internet.
 - Logging strutturato con SLF4J/Logback; evitare System.out.
+- In locale leggere le variabili da `.env` con `spring.config.import` (opzionale) e mantenere la configurazione esterna al codice.
+
+---
+
+## SWAGGER / OPENAPI (OBBLIGATORIO)
+
+- Ogni nuovo controller deve avere `@Tag` e ogni endpoint `@Operation` con un `summary` chiaro.
+- Endpoint protetti: aggiungere `@SecurityRequirement(name = "bearer-jwt")` a livello di controller o metodo.
+- Endpoint pubblici nello stesso controller protetto: usare `@Operation(security = {})`.
+- Ogni nuovo prefisso API va aggiunto ai gruppi in `OpenApiConfig` per mantenere Swagger ordinato.
+- Se si cambia la versione di Spring Boot, verificare la compatibilita della versione Springdoc prima di aggiornare.
 
 ---
 
@@ -170,7 +181,7 @@ Ogni feature/domino (autenticazione, utenti, ruoli, notifiche, ecc.) si sviluppa
 
 - Unit test con JUnit 5 e Mockito; test di integrazione con Spring Boot Test e Testcontainers per il database.
 - Testare service (mock repository) e controller (MockMvc o WebTestClient) includendo scenari di errore.
-- Scrivere migrazioni database con Flyway o Liquibase; la schema evolution deve essere controllata.
+- Gestire lo schema DB con script SQL in `database/queries` finche non viene adottato uno strumento di migrazione; evitare `ddl-auto=update`.
 - Abilitare health check, metrics e tracing con Spring Boot Actuator; esporre solo gli endpoint necessari.
 - Commentare solo per chiarire il perche di scelte non ovvie; il codice deve essere autoesplicativo.
 
@@ -191,6 +202,8 @@ Ogni feature/domino (autenticazione, utenti, ruoli, notifiche, ecc.) si sviluppa
 
 - Creare package separati per ogni dominio logico
 - Usare il pattern Entity -> DTO -> Repository -> Service -> Controller, completando un servizio prima di iniziarne un altro
+- Verificare i servizi gia implementati per mantenere coerenza nei pattern e nelle convenzioni
+- Tenere la documentazione Swagger coerente con i controller e i gruppi OpenAPI
 - Tipizzare ogni classe, metodo e variabile; evitare null non controllati
 - Validare sempre i dati in ingresso e normalizzare l'output esposto
 - Gestire errori con eccezioni significative e risposte HTTP coerenti
